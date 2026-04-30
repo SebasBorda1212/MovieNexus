@@ -1,0 +1,44 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: calc(100vh - 70px);
+  padding: 0 20px;
+  position: relative;
+}
+.title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+.title .text-primary { color: var(--primary); }
+.title .text-accent { color: var(--accent); }
+.subtitle {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+.mi-boton {
+  background-color: var(--primary);
+  color: #020617;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+.mi-boton:hover {
+  background-color: #2ba4db;
+  transform: scale(1.05);
+}
+.footer {
+  position: absolute;
+  bottom: 20px;
+  font-size: 0.8rem;
+  color: #64748b;
+}

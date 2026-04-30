@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: #0d1323;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.logo {
+  font-size: 1.2rem;
+}
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+.nav-links a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--text-main);
+}
