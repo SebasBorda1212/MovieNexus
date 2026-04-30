@@ -1,4 +1,4 @@
-.home-container {
+﻿.home-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,28 +13,31 @@
   font-weight: 800;
   margin-bottom: 20px;
 }
-.title .text-primary { color: var(--primary); }
-.title .text-accent { color: var(--accent); }
+.title .text-primary { color: var(--primary); text-shadow: 0 0 10px rgba(0,240,255,0.5); }
+.title .text-accent { color: var(--accent); text-shadow: 0 0 10px rgba(188,19,254,0.5); }
 .subtitle {
-  color: #94a3b8;
+  color: #a0a0a0;
   font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 40px;
 }
 .mi-boton {
   background-color: var(--primary);
-  color: #020617;
+  color: #000;
   border: none;
   padding: 12px 30px;
   font-size: 1rem;
   font-weight: 600;
   border-radius: var(--radius);
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
 }
 .mi-boton:hover {
-  background-color: #2ba4db;
+  background-color: #bc13fe;
+  color: white;
   transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(188, 19, 254, 0.6);
 }
 .footer {
   position: absolute;

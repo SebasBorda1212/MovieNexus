@@ -1,10 +1,10 @@
-.header {
+﻿.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 50px;
-  background-color: #0d1323;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background-color: #111217;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
 }
 .logo {
   font-size: 1.2rem;
@@ -14,11 +14,12 @@
   gap: 20px;
 }
 .nav-links a {
-  color: #94a3b8;
+  color: #a0a0a0;
   text-decoration: none;
   font-size: 0.9rem;
-  transition: color 0.3s;
+  transition: color 0.3s, text-shadow 0.3s;
 }
 .nav-links a:hover, .nav-links a.active {
   color: var(--text-main);
+  text-shadow: 0 0 8px var(--primary);
 }
