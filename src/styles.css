@@ -35,8 +35,14 @@ body {
   min-height: 100vh;
 }
 
-.text-primary { color: var(--primary); }
-.text-accent { color: var(--accent); }
+.text-primary { 
+  color: var(--primary); 
+  text-shadow: 0 0 15px var(--primary-glow); 
+}
+.text-accent { 
+  color: var(--accent); 
+  text-shadow: 0 0 15px rgba(244, 63, 94, 0.4); 
+}
 
 /* Reto Final: Botón Premium */
 .btn-premium {
