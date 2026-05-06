@@ -62,7 +62,6 @@ body {
 }
 
 .btn-premium:hover {
-  transform: translateY(-2px); /* El botón "salta" hacia el usuario */
-  box-shadow: 0 8px 25px var(--primary-glow); /* La sombra crece y brilla más */
-  filter: brightness(1.1); /* El color se aclara ligeramente */
+  transform: scale(1.08) translateY(-4px); /* El botón sobresale más y sube */
+  box-shadow: 0 4px 15px var(--primary-glow); /* Mantenemos el mismo alumbrado inicial */
 }
