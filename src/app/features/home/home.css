@@ -41,9 +41,13 @@
   opacity: 0; /* Empieza invisible */
 }
 
-.btn-premium {
-  animation: fadeInUp 0.8s ease-out 0.4s forwards; /* Delay de 0.4s */
+.btn-wrapper {
+  animation: fadeInUp 0.8s ease-out 0.4s forwards; /* La animación de entrada la hace el contenedor */
   opacity: 0;
+}
+
+.btn-premium {
+  /* Ya no necesita animación aquí, ahora el hover funcionará libremente */
 }
 
 .footer {
