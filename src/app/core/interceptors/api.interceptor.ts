@@ -11,6 +11,7 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
         language: 'es-ES' // Configuramos el idioma globalmente
       }
     });
+    console.log('Petición a TMDB:', apiReq.urlWithParams);
     return next(apiReq);
   }
 
