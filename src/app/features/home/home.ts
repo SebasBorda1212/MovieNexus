@@ -11,6 +11,7 @@ export class Home implements OnInit {
   private movieService = inject(MovieService);
 
   ngOnInit() {
+    console.log('Home Inicializado. Cargando películas...');
     this.movieService.getTrendingMovies().subscribe({
       next: (data) => {
         console.log('¡Éxito! Datos recibidos de TMDB: ', data.results);
