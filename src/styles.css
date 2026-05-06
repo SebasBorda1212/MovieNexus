@@ -62,6 +62,7 @@ body {
 }
 
 .btn-premium:hover {
-  transform: scale(1.08) translateY(-4px); /* El botón sobresale más y sube */
-  box-shadow: 0 4px 15px var(--primary-glow); /* Mantenemos el mismo alumbrado inicial */
+  transform: scale(1.08) translateY(-5px); /* Sobresale y sube */
+  box-shadow: 0 12px 30px var(--primary-glow); /* La sombra crece para dar profundidad */
+  filter: brightness(1.15); /* Se ilumina un poco más para resaltar */
 }
