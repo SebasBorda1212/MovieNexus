@@ -62,7 +62,7 @@ body {
 }
 
 .btn-premium:hover {
-  transform: scale(1.08) translateY(-5px); /* Sobresale y sube */
-  box-shadow: 0 12px 30px var(--primary-glow); /* La sombra crece para dar profundidad */
-  filter: brightness(1.15); /* Se ilumina un poco más para resaltar */
+  transform: translateY(-10px) scale(1.1); /* Ahora sí sube de forma evidente y se agranda */
+  box-shadow: 0 15px 35px var(--primary-glow); /* La sombra se aleja más para reforzar la altura */
+  filter: brightness(1.2); 
 }
