@@ -1,15 +1,16 @@
-<main class="home-container">
-  <h1 class="title gradient-text">
-    Bienvenido a MovieNexus
-  </h1>
-  <p class="subtitle">
-    Explora las películas más populares, busca tus favoritas y mantente<br>al día con los últimos estrenos.
-  </p>
-  <div class="btn-wrapper">
-    <button class="btn-premium">Empezar a Explorar</button>
-  </div>
-  
-  <footer class="footer">
-    © 2026 MovieNexus - Proyecto SENA
-  </footer>
-</main>
+<!-- Verificamos si ya llegó la información de la API usando el control flow -->
+@if (featuredMovie(); as movie) {
+
+<!-- Padre (Home) pasándole la variable 'movie' al Hijo (Hero) -->
+<app-hero [movie]="movie"></app-hero>
+
+} @else {
+
+<!-- Mientras llega la información, mostramos un estado de carga simple -->
+<div class="loading-hero">
+  <p>Cargando película destacada...</p>
+</div>
+
+}
+
+<!-- Aquí irán las filas de películas más adelante -->
