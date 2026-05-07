@@ -36,7 +36,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 10;
+    z-index: 50;
     background: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
@@ -50,16 +50,17 @@
     font-size: 1.5rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(5px);
-    opacity: 0;
-    /* Ocultos por defecto */
+    opacity: 0.6;
+    /* Siempre un poco visibles */
 }
 
-/* Los botones aparecen cuando pasamos el mouse sobre el carrusel */
+/* Los botones brillan más cuando pasamos el mouse sobre el carrusel */
 .slider-wrapper:hover .nav-btn {
-    opacity: 1;
+    opacity: 0.9;
 }
 
 .nav-btn:hover {
+    opacity: 1 !important;
     background: var(--primary);
     transform: translateY(-50%) scale(1.1);
     box-shadow: 0 0 15px var(--primary-glow);
