@@ -9,7 +9,10 @@ import { CreditsResponse } from '../../core/models/cast.model';
 @Component({
   selector: 'app-movie-details',
   standalone: true,
-  imports: [CommonModule, CastCard],
+  imports: [
+    CommonModule,
+    CastCard
+  ],
   templateUrl: './movie-details.html',
   styleUrl: './movie-details.css'
 })
@@ -22,7 +25,7 @@ export class MovieDetails implements OnInit {
 
   ngOnInit(): void {
     if (this.id) {
-      // forkJoin dispara ambas peticiones al mismo tiempo y crea un objeto con los dos resultados
+      // forkJoin dispara ambas peticiones al mismo tiempo
       this.movieData$ = forkJoin({
         details: this.movieService.getMovieById(this.id),
         credits: this.movieService.getMovieCredits(this.id)
