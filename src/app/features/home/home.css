@@ -16,6 +16,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -37,26 +38,39 @@
   line-height: 1.6;
   max-width: 600px;
   margin-bottom: var(--spacing-lg);
-  animation: fadeInUp 0.8s ease-out 0.2s forwards; /* Delay de 0.2s */
-  opacity: 0; /* Empieza invisible */
+  animation: fadeInUp 0.8s ease-out 0.2s forwards;
+  /* Delay de 0.2s */
+  opacity: 0;
+  /* Empieza invisible */
 }
 
 .btn-wrapper {
-  animation: fadeInUp 0.8s ease-out 0.4s forwards; /* La animación de entrada la hace el contenedor */
+  animation: fadeInUp 0.8s ease-out 0.4s forwards;
+  /* La animación de entrada la hace el contenedor */
   opacity: 0;
 }
 
-.btn-premium {
-  /* Ya no necesita animación aquí, ahora el hover funcionará libremente */
-}
 
-.footer {
-  position: absolute;
-  bottom: var(--spacing-lg);
-  font-size: 0.85rem;
-  color: #64748b;
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-lg);
+  width: 100%;
+  max-width: 1200px;
+  padding: var(--spacing-lg) 0;
   animation: fadeInUp 0.8s ease-out 0.6s forwards;
   opacity: 0;
 }
 
-/* Elimino estilos antiguos de .mi-boton ya que usamos .btn-premium global */
+.loading-text {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.footer {
+  margin-top: 4rem;
+  padding-bottom: var(--spacing-lg);
+  font-size: 0.85rem;
+  color: #64748b;
+  text-align: center;
+}

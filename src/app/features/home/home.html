@@ -1,13 +1,20 @@
 <main class="home-container">
-  <h1 class="title gradient-text">
-    Bienvenido a MovieNexus
-  </h1>
-  <p class="subtitle">
-    Explora las películas más populares, busca tus favoritas y mantente<br>al día con los últimos estrenos.
-  </p>
-  <div class="btn-wrapper">
-    <button class="btn-premium">Empezar a Explorar</button>
+  <div class="hero-section">
+    <h1 class="title gradient-text">
+      Bienvenido a MovieNexus
+    </h1>
+    <p class="subtitle">
+      Explora las películas más populares, busca tus favoritas y mantente<br>al día con los últimos estrenos.
+    </p>
   </div>
+
+  <section class="movies-grid">
+    @for (movie of movies(); track movie.id) {
+      <app-movie-card [movie]="movie" />
+    } @empty {
+      <p class="loading-text">Cargando películas...</p>
+    }
+  </section>
   
   <footer class="footer">
     © 2026 MovieNexus - Proyecto SENA

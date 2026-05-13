@@ -1,20 +1,24 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MovieService } from '../../core/services/movie.service';
+import { MovieCard } from '../../shared/components/movie-card/movie-card';
+import { Movie } from '../../core/models/movie.model';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  standalone: true,
+  imports: [MovieCard],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home implements OnInit {
   private movieService = inject(MovieService);
+  
+  movies = signal<Movie[]>([]);
 
   ngOnInit() {
-    console.log('Home Inicializado. Cargando películas...');
     this.movieService.getTrendingMovies().subscribe({
       next: (data) => {
-        console.log('¡Éxito! Datos recibidos de TMDB: ', data.results);
+        this.movies.set(data.results);
       },
       error: (err) => {
         console.error('Error al conectar con la API: ', err);
