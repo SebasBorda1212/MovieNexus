@@ -1,0 +1,26 @@
+<section class="slider-container">
+    @if (title) {
+    <h2 class="slider-title">{{ title }}</h2>
+    }
+
+    <div class="slider-wrapper">
+        <!-- Botón Izquierdo -->
+        <button class="nav-btn prev" (click)="scroll('left')" aria-label="Anterior">
+            <span>&#10094;</span>
+        </button>
+
+        <!-- El Track ahora tiene una referencia #sliderTrack -->
+        <div class="slider-track" #sliderTrack>
+            @for (movie of movies; track movie.id) {
+            <app-movie-card [movie]="movie"></app-movie-card>
+            } @empty {
+            <p>Cargando películas...</p>
+            }
+        </div>
+
+        <!-- Botón Derecho -->
+        <button class="nav-btn next" (click)="scroll('right')" aria-label="Siguiente">
+            <span>&#10095;</span>
+        </button>
+    </div>
+</section>

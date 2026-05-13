@@ -12,4 +12,10 @@ import { Movie } from '../../../core/models/movie.model';
 })
 export class MovieCard {
   @Input({ required: true }) movie!: Movie;
+
+  get posterUrl() {
+    return this.movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${this.movie.poster_path}`
+      : 'assets/no-poster.png';
+  }
 }
