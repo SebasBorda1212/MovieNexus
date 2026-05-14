@@ -4,8 +4,8 @@
   </div>
   
   <nav class="nav-links">
-    <a href="#" class="active">Inicio</a>
-    <a href="#">Favoritos</a>
+    <a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+    <a [routerLink]="['/favorites']" routerLinkActive="active">Favoritos</a>
   </nav>
 
   <!-- Buscador Reactivo -->

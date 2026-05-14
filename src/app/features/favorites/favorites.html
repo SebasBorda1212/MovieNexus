@@ -1,0 +1,19 @@
+<section class="favorites-section">
+  <div class="section-header">
+    <h2 class="section-title">Mis Favoritos</h2>
+  </div>
+
+  @if (favorites().length > 0) {
+    <div class="movies-grid">
+      @for (movie of favorites(); track movie.id) {
+        <app-movie-card [movie]="movie"></app-movie-card>
+      }
+    </div>
+  } @else {
+    <div class="empty-state">
+      <div class="empty-icon">💔</div>
+      <h3>Aún no tienes favoritos</h3>
+      <p>Explora nuestro catálogo y añade películas a tu colección personal.</p>
+    </div>
+  }
+</section>
