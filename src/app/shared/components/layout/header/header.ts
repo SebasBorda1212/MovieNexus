@@ -1,10 +1,12 @@
 import { Component, signal, effect, inject } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { MovieService } from '../../../../core/services/movie.service';
 import { Movie } from '../../../../core/models/movie.model';
 
 @Component({
   selector: 'app-header',
   standalone: true,
+  imports: [RouterModule],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
