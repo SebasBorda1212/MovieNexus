@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MovieService } from '../../core/services/movie.service';
 import { Movie } from '../../core/models/movie.model';
@@ -16,19 +16,18 @@ import { CreditsResponse } from '../../core/models/cast.model';
   templateUrl: './movie-details.html',
   styleUrl: './movie-details.css'
 })
-export class MovieDetails implements OnInit {
+export class MovieDetails {
   private movieService = inject(MovieService);
-  @Input() id!: string;
 
   // Declaramos un Observable que contendrá TODOS los datos que necesitamos
   movieData$!: Observable<{ details: Movie; credits: CreditsResponse }>;
 
-  ngOnInit(): void {
-    if (this.id) {
+  @Input() set id(value: string) {
+    if (value) {
       // forkJoin dispara ambas peticiones al mismo tiempo
       this.movieData$ = forkJoin({
-        details: this.movieService.getMovieById(this.id),
-        credits: this.movieService.getMovieCredits(this.id)
+        details: this.movieService.getMovieById(value),
+        credits: this.movieService.getMovieCredits(value)
       });
     }
   }
