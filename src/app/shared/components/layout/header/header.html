@@ -1,11 +1,39 @@
-﻿<header class="header">
+<header class="header">
   <div class="logo">
     <span class="text-text-main" style="font-weight: bold; color: white;">Movie<span class="text-primary">Nexus</span></span>
   </div>
   <nav class="nav-links">
     <a href="#" class="active">Inicio</a>
     <a href="#">Películas</a>
-    <a href="#">Buscar</a>
+    
+    <!-- Buscador Reactivo -->
+    <div class="search-container">
+      <input 
+        type="text" 
+        placeholder="Buscar películas..." 
+        class="search-input"
+        (input)="onSearchInput($event)"
+        [value]="searchQuery()"
+      >
+      
+      <!-- Resultados (Dropdown) -->
+      @if (searchResults().length > 0) {
+        <div class="search-dropdown">
+          @for (movie of searchResults(); track movie.id) {
+            <div class="search-result-item">
+              @if (movie.poster_path) {
+                <img [src]="'https://image.tmdb.org/t/p/w92' + movie.poster_path" [alt]="movie.title" class="result-img">
+              }
+              <div class="result-info">
+                <span class="result-title">{{ movie.title }}</span>
+                <span class="result-year">{{ movie.release_date ? movie.release_date.split('-')[0] : '' }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
     <a href="#">Favoritos</a>
   </nav>
 </header>
