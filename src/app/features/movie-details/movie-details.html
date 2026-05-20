@@ -18,15 +18,40 @@
 
       <p class="overview">{{ data.details.overview }}</p>
 
+      <section class="trailer-section">
+        <h2>Tráiler Oficial</h2>
+        @defer (on viewport) {
+          <app-movie-trailer [movieId]="data.details.id"></app-movie-trailer>
+        } @placeholder (minimum 500ms) {
+          <div class="trailer-placeholder">
+            <p>Haz scroll para ver el tráiler...</p>
+          </div>
+        } @loading {
+          <div class="defer-spinner">Cargando reproductor...</div>
+        } @error {
+          <p class="defer-error">Error al cargar el reproductor de video.</p>
+        }
+      </section>
+
       <!-- Mostrar Elenco usando data.credits -->
       <section class="movie-cast">
         <h2>Elenco Principal</h2>
-        <div class="cast-track">
-          <!-- El pipe slice:0:15 recorta la lista a los primeros 15 actores -->
-          @for (actor of data.credits.cast | slice:0:15; track actor.id) {
-            <app-cast-card [actor]="actor"></app-cast-card>
-          }
-        </div>
+        @defer (on viewport) {
+          <div class="cast-track">
+            <!-- El pipe slice:0:15 recorta la lista a los primeros 15 actores -->
+            @for (actor of data.credits.cast | slice:0:15; track actor.id) {
+              <app-cast-card [actor]="actor"></app-cast-card>
+            } @empty {
+              <p>No hay información del elenco.</p>
+            }
+          </div>
+        } @placeholder {
+          <div class="cast-placeholder">
+            <p>Haz scroll para ver el elenco...</p>
+          </div>
+        } @loading {
+          <div class="defer-spinner">Cargando elenco...</div>
+        }
       </section>
 
       <div class="actions">

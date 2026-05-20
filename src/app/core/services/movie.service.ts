@@ -30,4 +30,10 @@ export class MovieService {
   searchMovies(query: string) {
     return this.http.get<MovieResponse>(`${this.apiUrl}/search/movie?query=${encodeURIComponent(query)}`);
   }
+
+  getMovieVideos(id: string | number) {
+    return this.http.get<{ results: Array<{key: string; site: string; type: string; name: string }> }>(
+      `${this.apiUrl}/movie/${id}/videos`
+    );
+  }
 }
