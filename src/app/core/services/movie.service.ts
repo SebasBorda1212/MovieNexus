@@ -17,8 +17,10 @@ export class MovieService {
     return this.http.get<Movie>(`${this.apiUrl}/movie/${id}`);
   }
 
-  getPopularMovies() {
-    return this.http.get<MovieResponse>(`${this.apiUrl}/movie/popular`);
+  getPopularMovies(page: number = 1) {
+    return this.http.get<MovieResponse>(`${this.apiUrl}/movie/popular`, {
+      params: { page: page.toString() }
+    });
   }
 
   getMovieCredits(id: string | number) {

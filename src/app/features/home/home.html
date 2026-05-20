@@ -16,4 +16,20 @@
   <app-movie-slider title="Tendencias de Hoy" [movies]="trendingMovies()"></app-movie-slider>
 
   <app-movie-slider title="Las más Populares" [movies]="popularMovies()"></app-movie-slider>
+
+  <section class="catalog-section">
+    <h2 class="section-title">Explorar Catálogo</h2>
+    <div class="movies-grid">
+      @for (movie of catalogMovies(); track movie.id) {
+        <app-movie-card [movie]="movie"></app-movie-card>
+      }
+    </div>
+
+    <div #infiniteAnchor class="infinite-anchor">
+      @if (isFetchingNextPage()) {
+        <div class="infinite-spinner"></div>
+        <span>Cargando más películas...</span>
+      }
+    </div>
+  </section>
 </div>
