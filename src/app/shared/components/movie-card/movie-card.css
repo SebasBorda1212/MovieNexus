@@ -1,8 +1,15 @@
+/* El host element ocupa el espacio que le dé el contenedor (grid cell o flex item) */
+:host {
+    display: block;
+    flex: 0 0 200px;
+    /* Ancho fijo para el slider horizontal */
+    width: 200px;
+}
+
 .movie-card {
     position: relative;
-    width: 200px;
-    flex: 0 0 auto;
-    /* Importante para que no se aplasten en el scroll horizontal */
+    width: 100%;
+    /* Se adapta al contenedor (grid cell o slider) */
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;

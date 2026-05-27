@@ -34,8 +34,38 @@
   position: relative;
   z-index: 1;
   padding: 15rem var(--spacing-lg) var(--spacing-lg);
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
+}
+
+.movie-header-block {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+}
+
+.movie-poster {
+  width: 250px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.movie-info {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .movie-header-block {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .genres {
+    justify-content: center;
+  }
 }
 
 .movie-title {
@@ -64,7 +94,6 @@
   font-size: 1.1rem;
   line-height: 1.8;
   color: #cbd5e1;
-  margin-bottom: 3rem;
   max-width: 650px;
 }
 
@@ -182,3 +211,26 @@
     transform: rotate(360deg);
   }
 }
+
+/* =========================================
+   ANIMACIÓN DE SALIDA - Botón Volver
+   ========================================= */
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(6px);
+  }
+}
+
+.details-container.leaving {
+  animation: fadeOut 3s ease forwards;
+  pointer-events: none; /* Desactiva clics durante la animación */
+}
+

@@ -21,6 +21,8 @@ import { CreditsResponse } from '../../core/models/cast.model';
 export class MovieDetails {
   private movieService = inject(MovieService);
 
+  isLeaving = false; // Controla la animación de salida
+
   // Declaramos un Observable que contendrá TODOS los datos que necesitamos
   movieData$!: Observable<{ details: Movie; credits: CreditsResponse }>;
 
@@ -36,5 +38,14 @@ export class MovieDetails {
 
   getBackdropUrl(path: string | null | undefined): string {
     return path ? `https://image.tmdb.org/t/p/original${path}` : '';
+  }
+
+  getPosterUrl(path: string | null | undefined): string {
+    return path ? `https://image.tmdb.org/t/p/w500${path}` : 'assets/no-poster.png';
+  }
+
+  goBack(): void {
+    this.isLeaving = true; // Activa el fade-out
+    setTimeout(() => history.back(), 3000); // Navega después de 3 segundos
   }
 }

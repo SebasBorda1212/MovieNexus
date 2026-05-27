@@ -28,6 +28,9 @@ export class Home implements OnInit, AfterViewInit {
   catalogMovies = signal<Movie[]>([]);
   currentPage = signal(1);
   isFetchingNextPage = signal(false);
+  isInitialLoading = signal(true); // Para mostrar el skeleton la primera vez
+  skeletonItems = Array(12).fill(0); // 12 tarjetas skeleton placeholder
+
 
   ngOnInit(): void {
     // 1. Pedimos las tendencias
@@ -43,9 +46,13 @@ export class Home implements OnInit, AfterViewInit {
     // 2. Pedimos las populares
     this.movieService.getPopularMovies().subscribe({
       next: (data) => {
-        this.popularMovies.set(data.results); // Guardamos la lista de populares
+        this.popularMovies.set(data.results);
       }
     });
+
+    // 3. Cargamos la primera página del catálogo de inmediato
+    // (el IntersectionObserver se encarga de las páginas siguientes al hacer scroll)
+    this.loadMoreMovies();
   }
 
   ngAfterViewInit(): void {
@@ -66,12 +73,30 @@ export class Home implements OnInit, AfterViewInit {
 
   loadMoreMovies(): void {
     this.isFetchingNextPage.set(true);
-    this.movieService.getPopularMovies(this.currentPage()).subscribe({
-      next: (data) => {
-        this.catalogMovies.set([...this.catalogMovies(), ...data.results]);
-        this.currentPage.update(p => p + 1);
-        this.isFetchingNextPage.set(false);
-      }
+    const isFirst = this.isInitialLoading(); // ¿Es la primera carga?
+
+    const apiCall$ = new Promise<void>((resolve) => {
+      this.movieService.getPopularMovies(this.currentPage()).subscribe({
+        next: (data) => {
+          this.catalogMovies.set([...this.catalogMovies(), ...data.results]);
+          this.currentPage.update(p => p + 1);
+          this.isFetchingNextPage.set(false);
+          resolve();
+        }
+      });
     });
+
+    if (isFirst) {
+      // Primera carga: esperar mínimo 2 segundos para mostrar el skeleton
+      const minDelay$ = new Promise<void>(resolve => setTimeout(resolve, 2000));
+      Promise.all([apiCall$, minDelay$]).then(() => {
+        this.isInitialLoading.set(false);
+      });
+    } else {
+      // Páginas siguientes: sin delay extra
+      apiCall$.then(() => {
+        this.isInitialLoading.set(false);
+      });
+    }
   }
 }

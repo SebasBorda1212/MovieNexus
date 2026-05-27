@@ -1,5 +1,5 @@
 @if (movieData$ | async; as data) {
-  <div class="details-container">
+  <div class="details-container" [class.leaving]="isLeaving">
     <!-- Imagen de fondo (Backdrop) -->
     <div class="backdrop-wrapper">
       <img [src]="getBackdropUrl(data.details.backdrop_path)" class="backdrop-image" [alt]="data.details.title">
@@ -7,16 +7,23 @@
     </div>
 
     <div class="content-wrapper">
-      <h1 class="movie-title">{{ data.details.title }}</h1>
-      
-      <!-- Mostrar Géneros -->
-      <div class="genres">
-        @for (genre of data.details.genres; track genre.id) {
-          <span class="genre-tag">{{ genre.name }}</span>
+      <div class="movie-header-block">
+        @if (data.details.poster_path) {
+          <img [src]="getPosterUrl(data.details.poster_path)" class="movie-poster" [alt]="data.details.title">
         }
-      </div>
+        <div class="movie-info">
+          <h1 class="movie-title">{{ data.details.title }}</h1>
+          
+          <!-- Mostrar Géneros -->
+          <div class="genres">
+            @for (genre of data.details.genres; track genre.id) {
+              <span class="genre-tag">{{ genre.name }}</span>
+            }
+          </div>
 
-      <p class="overview">{{ data.details.overview }}</p>
+          <p class="overview">{{ data.details.overview }}</p>
+        </div>
+      </div>
 
       <section class="trailer-section">
         <h2>Tráiler Oficial</h2>
@@ -55,8 +62,8 @@
       </section>
 
       <div class="actions">
-        <button class="back-button" onclick="history.back()">
-          Volver
+        <button class="back-button" (click)="goBack()">
+          ← Volver
         </button>
       </div>
     </div>

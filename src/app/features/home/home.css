@@ -115,6 +115,14 @@
   width: 100%;
 }
 
+/* Hacer que app-movie-card ocupe toda la celda del grid */
+/* Anulamos el width:200px y flex del :host cuando está dentro del grid */
+.catalog-section .movies-grid app-movie-card {
+  display: block;
+  width: 100% !important;
+  flex: none !important;
+}
+
 .infinite-anchor {
   width: 100%;
   padding: 3rem 0;
@@ -141,4 +149,61 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* =========================================
+   SKELETON LOADING - Explorar Catálogo
+   ========================================= */
+
+@keyframes shimmer {
+  0% {
+    background-position: -600px 0;
+  }
+  100% {
+    background-position: 600px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.10) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #1a1a2e;
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 12px 12px 0 0;
+  background-color: #252545;
+}
+
+.skeleton-info {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+  background-color: #252545;
+  width: 100%;
+}
+
+.skeleton-line.short {
+  width: 55%;
 }
