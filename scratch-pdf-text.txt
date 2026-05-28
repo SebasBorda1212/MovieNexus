@@ -1,0 +1,426 @@
+
+
+Guía Pedagógica: Día 15 - PWA (Instalación Móvil)  
+¡Llegamos  al  final  de  nuestro proyecto!  Ya  tienes  tu  aplicación  funcionando  y 
+desplegada  en  Vercel.  Hoy  vamos  a  dar un paso gigante para  convertirla  en  una 
+aplicación de nivel profesional: 
+1. PWA (Progressive Web App): Haremos que los usuarios puedan "instalar" tu 
+web en sus celulares o computadoras como si fuera una app nativa, con su 
+propio icono, sin barras del navegador y funcionando incluso si el internet es 
+lento. 
+ 
+Parte 1: PWA (Convierte tu web en una App Instalable)  
+¿Qué es una PWA? 
+Una Progressive Web App es una página web que se comporta como una aplicación 
+nativa del celular. Imagina que tu web de MovieNexus se puede abrir desde un icono 
+en la pantalla del celular, sin barras del navegador, y que carga ultra rápido incluso con 
+internet lento. ¡Eso es una PWA! 
+Los dos pilares de toda PWA son: 
+• Web App Manifest (manifest.webmanifest): Un archivo JSON que le dice al 
+dispositivo cómo debe verse la app al instalarse — su nombre, colores, icono y 
+cómo se abre. 
+• Service Worker: Un archivo JavaScript invisible que se ejecuta en segundo 
+plano. Actúa como un "intermediario inteligente" entre tu app y la red: guarda 
+archivos  en  caché  para  que  la  app  cargue  súper  rápido,  e  incluso  puede 
+funcionar sin internet. 
+¿Qué necesita Chrome para mostrar el botón "Instalar"? 
+Chrome es muy estricto. Para que aparezca el famoso botón de instalar (     el iconito 
+en la barra de direcciones), tu app DEBE cumplir TODOS estos requisitos: 
+ 
+ 
+1.    Servirse por HTTPS (Vercel ya nos lo da gratis). 
+2.    Tener  un manifest.webmanifest válido  con name, start_url y display: 
+"standalone". 
+
+3.    Tener al  menos  un  icono  de  192x192  píxeles y  otro  de 512x512 
+píxeles (archivos reales, no solo la referencia en el JSON). 
+4.    Tener un Service Worker registrado y activo. 
+Si falta cualquiera de estos 4 puntos, Chrome simplemente no muestra nada. No te da 
+error, no te avisa — simplemente no aparece el botón. Por eso es tan importante 
+verificar cada paso. 
+ 
+Paso 1: Instalar el paquete del Service Worker 
+Lo  primero  es  instalar  el  paquete @angular/service-worker.  Este  paquete  le  da  a 
+Angular la capacidad de registrar y manejar un Service Worker automáticamente. 
+ NOTA IMPORTANTE sobre Angular 21: Al momento de escribir esta guía, Angular 21 
+es una versión muy reciente y el comando automático ng add @angular/pwa puede 
+fallar por incompatibilidades de versión. Por eso, aquí te enseñamos a configurar la 
+PWA paso a paso manualmente. Esto es mucho más valioso porque entenderás 
+exactamente qué hace cada pieza — en una entrevista laboral, saber explicar esto vale 
+oro. 
+ 
+ 
+¿Por qué usamos --legacy-peer-deps? 
+Cuando un paquete de npm se instala, revisa si las versiones de los otros paquetes de 
+tu proyecto son "compatibles". Como Angular 21 es muy nuevo, algunos paquetes 
+todavía no han actualizado su lista de versiones compatibles. La flag --legacy-peer-
+deps le  dice  a  npm: "instálalo  de  todas  formas,  yo  sé  lo  que  hago".  Funciona 
+perfectamente — es solo un tema de que la lista oficial aún no se actualizó. 
+ 
+ 
+Paso 2: Crear el archivo .npmrc (CRÍTICO para Vercel) 
+Este paso es crucial y es donde muchos se quedan atascados sin saber por qué. 
+
+Cuando tú ejecutas npm install --legacy-peer-deps en tu computadora, eso solo aplica 
+en TU máquina. Pero cuando Vercel reconstruye tu proyecto (después de cada git 
+push),  Vercel  ejecuta  un npm  install limpio  sin  esa  flag,  y  el  build  falla  porque 
+encuentra conflictos de dependencias. 
+La solución es crear un archivo .npmrc en la raíz de tu proyecto que le diga a npm en 
+cualquier máquina que use esa configuración: 
+Crea el archivo .npmrc en la raíz del proyecto (al mismo nivel que package.json) con 
+este contenido: 
+legacy-peer-deps=true 
+ 
+Eso es todo. Una sola línea. Pero sin ella, Vercel no podrá hacer el build y verás 
+errores rojos en tu panel de deployments. 
+Lección  del  mundo  real: En  proyectos  profesionales,  el  archivo .npmrc se  usa 
+constantemente  para  configurar  registros  privados,  tokens  de  acceso,  y  flags  de 
+compatibilidad. ¡Ya estás aprendiendo prácticas de trabajo reales! 
+ 
+Paso 3: Crear el Web App Manifest 
+El manifest es la "tarjeta de presentación" de tu PWA. Le dice al dispositivo: "Hola, soy 
+MovieNexus, estos son mis colores, este es mi icono, y quiero que me abras sin barras 
+del navegador". 
+Crea el archivo public/manifest.webmanifest con este contenido: 
+ 
+ 
+ 
+
+ 
+
+Explicación de cada campo: 
+Campo ¿Para qué sirve? Ejemplo 
+name 
+Nombre  completo  que  se 
+muestra al instalar 
+"MovieNexus" 
+short_name 
+Nombre  corto  que  va  debajo 
+del icono 
+"MovieNexus" 
+description 
+Descripción  para  tiendas  y  el 
+sistema 
+"Descubre,   busca   y 
+guarda..." 
+theme_color 
+Color de la barra superior del 
+celular 
+"#111827" (gris oscuro) 
+background_color 
+Color  de  la  "Splash  Screen" 
+(pantalla de carga) 
+"#0f172a" (azul muy oscuro) 
+display Cómo se muestra la app 
+"standalone"  =  sin  barras 
+del navegador 
+orientation Orientación preferida "portrait-primary" = vertical 
+scope Páginas que controla la PWA "/" = toda la app 
+start_url 
+URL  que  se  abre  al  tocar  el 
+icono 
+"/" = la página principal 
+id Identificador único de la PWA "/" 
+icons 
+Lista  de  iconos  en  distintos 
+tamaños 
+Mínimo 192x192 y 512x512 
+    CUIDADO  con purpose: Antes  se  usaba "purpose":  "maskable  any" (las  dos 
+juntas), pero Chrome moderno ahora exige que sean separadas. Si necesitas ambas, 
+debes  declarar  el  icono  dos  veces:  una  con "any" y  otra  con "maskable".  Para 
+simplicidad, usamos solo "any" que funciona perfecto. 
+ 
+
+Paso 4: Crear los íconos de la PWA 
+    Error #1 más común: No basta con poner las rutas de los íconos en el manifest. 
+Los archivos PNG deben existir físicamente en esas rutas. Si Chrome los pide y no los 
+encuentra, simplemente no muestra el botón de instalar — sin error, sin aviso. 
+ 
+ ¿Por qué se necesitan tantos tamaños? (La teoría de la densidad de píxeles) 
+Esta  es  una  de  las  preguntas  más  frecuentes: "¿No  es  suficiente  con  una  sola 
+imagen?" La respuesta corta es no, y la razón está en cómo funcionan las pantallas 
+modernas. 
+Cada  pantalla  tiene  una densidad  de  píxeles medida  en dpi (dots  per  inch).  Un 
+teléfono barato puede tener 160dpi, mientras que un iPhone 15 Pro Max tiene 460dpi. 
+Si  pusieras  una  imagen  de  72x72  píxeles  en  una  pantalla  de  460dpi,  el  sistema 
+operativo  la  "estirararia"  para  que  se  viera  grande — y  el resultado  sería  una 
+imagen borrosa y pixelada. 
+Para evitar esto, el sistema operativo le dice al navegador: "Oye, necesito un ícono de 
+al menos 192 píxeles para esta pantalla", y el navegador busca en el manifest el tamaño 
+más cercano. Si lo encuentra, lo muestra nítido. Si no lo encuentra, usa el más grande 
+disponible y lo reduce — lo cual puede verse mal. 
+Analogía: Es como tener una foto de 100x100 píxeles y tratar de imprimirla en un póster 
+de 1 metro. Se verá horrible. Por eso los fotógrafos guardan la imagen en alta resolución 
+y la reducen al tamaño necesario, no al revés. 
+La tabla de tamaños exactos y su propósito 
+Tamaño Densidad 
+Android 
+¿Dónde se usa? ¿Obligatorio? 
+72×72 hdpi (1.5x) Dispositivos Android de gama baja No 
+96×96 xhdpi (2x) Android estándar, pantallas medianas No 
+128×128 — Chrome Web Store, atajos de escritorio No 
+144×144 xxhdpi (3x) Android de alta gama, Windows tiles No 
+152×152 — iPhone/iPad (iOS pantallas Retina) No 
+
+192×192 xxxhdpi (4x) 
+   Mínimo absoluto Chrome — ícono 
+en pantalla de inicio 
+SÍ 
+384×384 — Android Ultra  HD  (Pixel,  Galaxy  S 
+series) 
+No 
+512×512 — 
+   Mínimo   absoluto   Chrome — 
+Splash Screen al abrir la app 
+SÍ 
+      Regla  de  oro: Solo  necesitas 192×192  y  512×512 para  que  Chrome  active  la 
+instalación. Los demás son para que la app se vea perfecta en cualquier dispositivo del 
+mundo. En un proyecto profesional de portafolio, incluir los 8 tamaños demuestra que 
+conoces el estándar completo. 
+¿Cómo funciona la selección automática? 
+El navegador lee  la lista de icons en tu manifest y elige automáticamente el más 
+apropiado para la pantalla del usuario. Nunca usa todos al mismo tiempo: 
+Celular Android gama media (2x) → busca el más cercano a 96px → usa icon-96x96.png 
+iPhone Retina (3x)              → busca el más cercano a 152px → usa icon-152x152.png   
+Android Galaxy S (4x)           → busca el más grande posible  → usa icon-512x512.png 
+Splash Screen al abrir la PWA   → siempre busca el de 512px   → usa icon-512x512.png 
+Es exactamente igual al atributo srcset que usamos en imágenes HTML responsivas — 
+el navegador selecciona el mejor tamaño de forma inteligente. 
+ 
+Paso A: Conseguir o diseñar tu imagen base 
+Antes de generar los 8 tamaños, necesitas una sola imagen de alta calidad (mínimo 
+512×512 píxeles, idealmente 1024×1024). Esta será tu "máster" y de ella derivarás 
+todos los tamaños. 
+Requisitos de diseño para que se vea bien: 
+•    Formato cuadrado (1:1) 
+•    El elemento principal centrado (dejando un margen de ~10% en los bordes 
+para que no se corte en íconos circulares de Android) 
+
+•    Fondo sólido o con degradado (no transparente — algunos sistemas ponen 
+fondo negro si no hay color) 
+•    Alta resolución: mínimo 512×512 px 
+Opción 1 — Diseña en Figma (recomendado para proyectos profesionales): 
+1. Ve a figma.com y crea un archivo nuevo 
+2. Crea un frame de 1024×1024 píxeles 
+3. Diseña tu ícono (iniciales, logo, símbolo) 
+4. Exporta como PNG a 1x (te dará 1024×1024) 
+Opción 2 — Usa una herramienta de IA para generar el diseño: Herramientas como 
+DALL-E, Midjourney o Adobe Firefly pueden generar íconos de aplicación a partir de una 
+descripción. Prompt sugerido: 
+App icon for a movie streaming app called MovieNexus.  
+Square, rounded corners, navy blue gradient background,  
+bold white letters "MN", minimal and modern design,  
+no text other than the initials. 
+Opción 3 — Logo ya existente: Si ya tienes un logo .svg o .png, úsalo directamente 
+como imagen base. Solo asegúrate de que sea cuadrado. 
+ 
+Paso B: Generar los 8 tamaños a partir de tu imagen base 
+Una vez tengas tu imagen maestra de alta resolución, tienes varias formas de generar 
+todos los tamaños: 
+ 
+ 
+ 
+ 
+ 
+ 
+
+Método 1: Herramientas Online (más fácil, sin instalar nada) 
+Herramienta URL ¿Qué hace? 
+RealFaviconGenerator realfavicongenerator.net Genera  íconos  para  PWA,  iOS, 
+Android,  Windows.  El  más 
+completo. 
+Favicon.io favicon.io Genera  desde  imagen,  texto  o 
+emoji. Simple y rápido. 
+PWA Builder pwabuilder.com Genera el manifest Y los íconos 
+juntos. De Microsoft. 
+Cómo usarlo con RealFaviconGenerator: 
+1. Entra a realfavicongenerator.net 
+2. Sube tu imagen cuadrada (mínimo 512×512) 
+3. Configura los colores de tu app 
+4. Haz clic en "Generate your Favicons and HTML code" 
+5. Descarga el paquete ZIP 
+6. Extrae los archivos PNG y cópialos a public/assets/icons/ 
+7. Renómbralos con el formato icon-{tamaño}x{tamaño}.png 
+ 
+Método 2: Script de Node.js con sharp (recomendado para automatizar) 
+sharp es la librería de procesamiento de imágenes más rápida de Node.js. La usamos 
+solo en desarrollo (no en producción): 
+ 
+Crea un archivo generate-icons.js en la raíz del proyecto: 
+
+ 
+Ejecuta el script: 
+ 
+ ¿Por  qué fit:  'contain' y  no fit:  'cover'? Con contain,  la  imagen  se escala 
+proporcionalmente y se rellena el fondo con el color definido. Con cover, la imagen se 
+recorta para llenar el cuadro — puedes perder partes del diseño. Para íconos con 
+iniciales o logos centrados, contain es siempre la opción correcta. 
+
+Método 3: PowerShell (Windows, sin instalar nada adicional) 
+Si estás en Windows y no quieres instalar dependencias, PowerShell incluye soporte 
+nativo para manipulación de imágenes con .NET: 
+ 
+Paso C: Estructura final de archivos 
+Cuando termines, tu carpeta de íconos debe verse exactamente así: 
+
+ 
+ Tip: Los  archivos  están  en  la  carpeta public/ (no  en src/).  Angular  copia 
+automáticamente  todo  el  contenido  de public/ a  la  carpeta  de  distribución  final 
+cuando  haces ng  build.  Esto  está  configurado  en  tu angular.json dentro  de  la 
+sección assets. 
+Paso 5: Crear la configuración del Service Worker (ngsw-config.json) 
+El Service Worker necesita saber qué archivos guardar en caché. Creamos un archivo 
+de configuración en la raíz del proyecto llamado ngsw-config.json: 
+
+ 
+¿Qué significan los grupos? 
+• app (installMode:  "prefetch"): Estos  archivos  se  descargan  y  guardan  en 
+caché inmediatamente cuando el usuario visita la app por primera vez. Incluye 
+el HTML, CSS y JavaScript principales — lo esencial para que la app abra. 
+• assets (installMode: "lazy"): Estos archivos se guardan en caché solo cuando 
+se necesitan (lazy = perezoso). Incluye imágenes, fuentes y otros recursos. No 
+los descargamos todos al inicio para no desperdiciar datos del usuario. 
+• updateMode: "prefetch": Cuando hay una nueva versión de la app, los assets 
+se actualizan proactivamente en segundo plano. 
+Paso 6: Registrar el Service Worker en Angular (app.config.ts) 
+
+Ahora le decimos a Angular que use el Service Worker. Abre src/app/app.config.ts y haz 
+estos dos cambios: 
+1. Agrega los imports en la parte superior: 
+ 
+2. Agrega el provider en el array de providers: 
+ 
+Qué hace cada opción? 
+• 'ngsw-worker.js':  Es  el  nombre  del  archivo  del  Service  Worker  que  Angular 
+genera automáticamente cuando haces ng build. 
+• enabled: !isDevMode(): El Service Worker solo se activa en producción. En 
+modo desarrollo (ng serve) está desactivado porque el caché interferiría con tus 
+cambios en tiempo real (harías un cambio y no lo verías porque el Service 
+Worker te serviría la versión vieja). 
+• registrationStrategy: 'registerWhenStable:30000': Espera hasta que la app esté 
+"estable" (cargada por completo) o máximo 30 segundos antes de registrar el 
+Service  Worker.  Esto  evita  que  el  Service  Worker  compita  con  la  app  por 
+recursos durante la carga inicial. 
+ 
+
+Paso 7: Configurar angular.json para el Service Worker 
+Abre angular.json y dentro de projects > MovieNexus > architect > build > options, 
+agrega esta línea: 
+ 
+Esto  le  dice  al  build  de  Angular: "Cuando  compiles  para  producción,  lee  el 
+archivo ngsw-config.json y genera el Service Worker automáticamente". 
+Tu  sección  de options debería  quedar  así  (la  línea  nueva  está  marcada  con  el 
+comentario): 
+ 
+Paso 8: Enlazar el Manifest en index.html 
+Abre src/index.html y agrega dos líneas dentro del <head>: una para enlazar el 
+manifest y otra para el color del tema: 
+
+ 
+• <link rel="manifest">: Le dice al navegador dónde encontrar el manifest de la 
+PWA. 
+• <meta name="theme-color">: Define el color de la barra superior del 
+navegador en dispositivos móviles. 
+ 
+Paso 9: Verificar que todo funcione (Build local) 
+Dato  curioso  para  Desarrolladores: Es  posible  que  al  ejecutar ng  serve y 
+abrir http://localhost:4200 veas el botón de instalar (    ) en tu navegador y te deje 
+instalar  la  app. ¿Por  qué  pasa  esto  si  dijimos  que  el Service  Worker  está 
+desactivado? 
+Esto  ocurre  porque  los  navegadores  modernos  (como  Chrome)  solo  exigen 
+un manifest.webmanifest válido   y   que   estés   en   un   entorno   seguro 
+(como localhost o HTTPS) para ofrecerte la instalación. 
+Sin embargo, el Service Worker real (offline, caché de red, etc.) sigue estando 100% 
+desactivado en desarrollo debido a la regla enabled: !isDevMode() que pusimos en 
+el app.config.ts.  Si  apagas  el  internet  en localhost:4200,  la  app  se  caerá 
+inmediatamente. Para probar la experiencia offline completa, necesitamos un build 
+de producción. 
+ 
+
+Para verificar localmente que tu PWA compila correctamente en modo de producción: 
+ 
+Si el build termina sin errores, ¡la configuración PWA está correcta! Deberías ver en la 
+salida tanto "Browser bundles" como "Server bundles". 
+Para  probar  la  instalación  localmente,  puedes  usar  directamente  el  comando  de 
+desarrollo (ng serve-o ) y abrir http://localhost:4200, donde los navegadores modernos 
+te permitirán instalar la aplicación. Para probar la persistencia offline y la seguridad del 
+Service Worker real, continuaremos con el despliegue a Vercel en la siguiente sección. 
+ 
+OJO: NO  INSTALAR  DESDE  LOCALHOST....SOLAMENTE  PROBAR  SI  TIENE  LA 
+OPCION DE INSTALAR 
+SE DEBE INSTALAR DIRECTAMENTE DESDE PRODUCCIÓN 
+Paso 10: Configurar vercel.json para la PWA (CRÍTICO) 
+Si  subes  tu  PWA  a  Vercel  sin  esta  configuración,  notarás  que  la  PWA  no  carga 
+correctamente o el Service Worker no se actualiza. Esto sucede porque Vercel cachea 
+agresivamente los archivos en el servidor por defecto y no envía las rutas correctas al 
+Service Worker en un entorno SPA. 
+Abre el archivo vercel.json en la raíz de tu proyecto y asegúrate de que tenga este 
+contenido: 
+
+ 
+  
+Paso Final: Desplegar y probar en un celular real 
+Subir los cambios a GitHub 
+Ahora que todo está configurado, sube los cambios: 
+ 
+Vercel detectará el cambio y reconstruirá tu aplicación automáticamente. Espera 2-3 
+minutos y verifica en tu panel de Vercel (vercel.com/dashboard) que el deployment 
+esté en verde (Ready). 
+Si ves el deploy en ROJO (Error): Revisa que hayas creado el 
+archivo .npmrc con legacy-peer-deps=true. Sin él, Vercel no puede instalar las 
+dependencias correctamente. 
+
+Cómo instalar MovieNexus en tu celular 
+En Android (Chrome): 
+1. Abre Google Chrome en tu celular Android. 
+2. Entra a la URL de tu proyecto: tu-proyecto.vercel.app. 
+3. Espera a que cargue completamente. 
+4. Debería aparecer un banner inferior que dice "Añadir MovieNexus a la pantalla 
+de inicio". ¡Tócalo! 
+5. Si no aparece el banner automático, toca los tres puntitos (⋮) arriba a la 
+derecha y busca "Instalar aplicación" o "Añadir a pantalla de inicio". 
+6. Confirma la instalación. 
+7. ¡Listo! Verás el icono de MovieNexus en tu pantalla de inicio. 
+  
+
+ 
+ 
+ En iPhone/iPad (Safari): 
+1. Abre Safari (    DEBE ser Safari, no Chrome — en iOS solo Safari soporta 
+PWA). 
+2. Entra a la URL de tu proyecto: tu-proyecto.vercel.app. 
+3. Toca el botón de Compartir (el cuadrado con la flechita ↑ hacia arriba, abajo 
+en la barra de Safari). 
+4. Desliza las opciones hacia arriba y busca "Añadir a pantalla de inicio". 
+5. Pon el nombre que quieras (o deja "MovieNexus") y toca "Añadir". 
+6. ¡Listo! El icono aparecerá en tu pantalla de inicio. 
+ 
+ 
+
+En computadora (Chrome): 
+1. Abre Chrome y ve a tu URL de Vercel. 
+2. Busca en la barra de direcciones un icono de una pantallita con una 
+flecha (    ), ubicado al lado de la estrellita de favoritos. 
+3. Haz clic y confirma "Instalar". 
+4. La app se abrirá en su propia ventana, sin barras del navegador. 
+ 
+ 
+
+¿Qué deberías ver al instalarla? 
+Al abrir MovieNexus desde el icono instalado: 
+•    Se abre sin barras del navegador (como app nativa). 
+•    La barra superior del celular toma el color oscuro (#111827) de tu tema. 
+•    Todas las funciones (buscar, favoritos, ver detalles) funcionan igual. 
+•    La app carga más rápido que desde el navegador (gracias al Service Worker 
+y el caché). 
+ 
+¡Felicidades!  
+Has completado no solo una aplicación funcional, sino una aplicación con: 
+•    Diseño profesional con estilos avanzados y animaciones 
+•    Consumo de APIs reales (TMDB) 
+•    Manejo de estados vacíos, errores y carga 
+•    Rutas y navegación con lazy loading 
+•    Interceptores HTTP para API keys y manejo de errores 
+•    PWA instalable en celulares y computadoras 
+•    Desplegada en producción en Vercel 
+ 

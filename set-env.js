@@ -17,5 +17,7 @@ if (!fs.existsSync(targetFolderPath)) {
 }
 
 const targetPath = './src/environments/environment.ts';
+const targetDevPath = './src/environments/environment.development.ts';
 fs.writeFileSync(targetPath, envConfigFile);
-console.log(`✅ environment.ts generado con apiKey: ${apiKey.substring(0, 6)}...`);
+fs.writeFileSync(targetDevPath, envConfigFile);
+console.log(`✅ environment.ts y environment.development.ts generados con apiKey: ${apiKey.substring(0, 6)}...`);
