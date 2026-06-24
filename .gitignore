@@ -46,3 +46,6 @@ Thumbs.db
 # Vercel deployments (Security)
 /src/environments/environment.ts
 /src/environments/environment.development.ts
+
+# Environment variables
+.env
