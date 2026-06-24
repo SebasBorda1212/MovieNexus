@@ -1,0 +1,117 @@
+<div class="chat-container" [class.open]="isOpen()">
+  <!-- Floating Button -->
+  <button class="chat-btn" (click)="toggleChat()" aria-label="Abrir asistente de IA">
+    <div class="btn-content">
+      @if (isOpen()) {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon-close">
+          <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+        </svg>
+      } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon-chat">
+          <path fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.237.18 2.228 1.196 2.228 2.454v11.643c0 1.258-.991 2.274-2.228 2.454-2.335.342-4.722.52-7.152.52-1.295 0-2.577-.05-3.842-.148l-4.148 3.864c-.566.527-1.488.13-1.488-.65V18.05c-1.395-.12-2.736-.339-3.996-.649C1.22 17.066.25 15.998.25 14.686V5.225c0-1.258.991-2.274 2.228-2.454a49.206 49.206 0 012.37-.249zM12 12a1 1 0 100-2 1 1 0 000 2zm3-1a1 1 0 11-2 0 1 1 0 012 0zm-5 1a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+        </svg>
+      }
+    </div>
+    <span class="btn-badge">AI</span>
+  </button>
+
+  <!-- Chat Window (Glassmorphic) -->
+  @if (isOpen()) {
+    <div class="chat-window">
+      <!-- Header -->
+      <div class="chat-header">
+        <div class="header-info">
+          <div class="avatar-container">
+            <div class="ai-avatar">🍿</div>
+            <span class="status-indicator online"></span>
+          </div>
+          <div>
+            <h3>Nexus AI</h3>
+            <p class="status-text">Asistente Cinéfilo</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="action-btn" (click)="clearChat()" title="Limpiar conversación">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-trash">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+            </svg>
+          </button>
+          <button class="action-btn close" (click)="toggleChat()" title="Cerrar chat">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon-close-small">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Body -->
+      <div class="chat-body" #historyContainer>
+        <div class="messages-list">
+          @for (msg of history(); track $index) {
+            <div class="message-row" [class.user-row]="msg.role === 'user'" [class.ai-row]="msg.role === 'assistant'">
+              @if (msg.role === 'assistant') {
+                <div class="message-avatar">🎬</div>
+              }
+              <div class="message-bubble-wrapper">
+                <div class="message-bubble" [innerHTML]="getSafeHtml(msg.content)"></div>
+                
+                <!-- Dynamic TMDB Recommendations Carousel -->
+                @if (msg.recommendations && msg.recommendations.length > 0) {
+                  <div class="recommendations-container">
+                    <p class="rec-title">Películas recomendadas:</p>
+                    <div class="rec-carousel">
+                      @for (movie of msg.recommendations; track movie.id) {
+                        <div class="rec-card" (click)="navigateToMovie(movie.id)">
+                          <div class="poster-wrapper">
+                            <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title" loading="lazy" />
+                            <div class="rating-badge">
+                              ⭐ {{ movie.vote_average | number:'1.1-1' }}
+                            </div>
+                          </div>
+                          <div class="rec-info">
+                            <h4>{{ movie.title }}</h4>
+                            <p class="rec-reason">{{ movie.reason }}</p>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Loading typing indicator -->
+          @if (loading()) {
+            <div class="message-row ai-row">
+              <div class="message-avatar">🎬</div>
+              <div class="message-bubble typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Input Footer -->
+      <form class="chat-footer" (submit)="sendMessage(); $event.preventDefault()">
+        <input 
+          type="text" 
+          [ngModel]="userInput()" 
+          (ngModelChange)="userInput.set($event)" 
+          name="userInput"
+          placeholder="Pregunta sobre directores, géneros o pide recomendaciones..." 
+          autocomplete="off" 
+          [disabled]="loading()"
+        />
+        <button type="submit" class="send-btn" [disabled]="!userInput().trim() || loading()" aria-label="Enviar mensaje">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon-send">
+            <path d="M3.478 2.405a.75.75 0 00-.926.94l2.437 6.402a.496.496 0 00.323.313l13.568 3.442a.25.25 0 010 .48l-13.568 3.442a.497.497 0 00-.323.313L2.552 20.655a.75.75 0 00.926.94l17.755-9.117a.75.75 0 000-1.348L3.478 2.405z" />
+          </svg>
+        </button>
+      </form>
+    </div>
+  }
+</div>
