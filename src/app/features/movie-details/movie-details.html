@@ -59,6 +59,17 @@
         } @loading {
           <div class="defer-spinner">Cargando elenco...</div>
         }
+<section class="comments-container">
+  @defer (on viewport) {
+    <app-movie-comments [movieId]="data.details.id"></app-movie-comments>
+  } @placeholder {
+    <div class="comments-loading-placeholder">
+      <p>Scroll hacia abajo para ver y dejar comentarios...</p>
+    </div>
+  } @loading {
+    <div>Cargando sección de comentarios...</div>
+  }
+</section>
       </section>
 
       <div class="actions">

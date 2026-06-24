@@ -4,6 +4,7 @@ import { MovieService } from '../../core/services/movie.service';
 import { Movie } from '../../core/models/movie.model';
 import { CastCard } from '../../shared/components/cast-card/cast-card';
 import { MovieTrailer } from './components/movie-trailer/movie-trailer';
+import { MovieComments } from './components/movie-comments/movie-comments.component';
 import { Observable, forkJoin } from 'rxjs';
 import { CreditsResponse } from '../../core/models/cast.model';
 
@@ -13,7 +14,7 @@ import { CreditsResponse } from '../../core/models/cast.model';
   imports: [
     CommonModule,
     CastCard,
-    MovieTrailer
+    MovieTrailer, MovieComments,
   ],
   templateUrl: './movie-details.html',
   styleUrl: './movie-details.css'
