@@ -35,7 +35,7 @@ const app = express();
 // Local /api/chat Gemini API proxy endpoint
 app.post('/api/chat', express.json(), async (req, res) => {
   const GEMINI_API_KEY = process.env['GEMINI_API_KEY'];
-  const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${GEMINI_API_KEY}`;
 
   try {
     const { messages } = req.body;
