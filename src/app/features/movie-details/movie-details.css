@@ -228,9 +228,85 @@
     filter: blur(6px);
   }
 }
-
 .details-container.leaving {
   animation: fadeOut 3s ease forwards;
   pointer-events: none; /* Desactiva clics durante la animación */
 }
 
+/* Proveedores de Streaming CSS (Glassmorphism & Micro-animations) */
+.providers-section {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.providers-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffffff;
+}
+
+.provider-group {
+  margin-bottom: 1.25rem;
+}
+
+.provider-group:last-child {
+  margin-bottom: 0;
+}
+
+.provider-group h3 {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.provider-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.provider-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.provider-item img {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* Micro-animations on hover */
+.provider-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 230, 142, 0.15);
+  color: #ffffff;
+}
+
+.no-providers {
+  color: #94a3b8;
+  font-style: italic;
+  font-size: 0.9rem;
+}

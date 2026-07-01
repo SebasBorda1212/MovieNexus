@@ -25,6 +25,57 @@
         </div>
       </div>
 
+      <!-- Proveedores de Streaming -->
+      @if (data.watchProviders.results[userRegion]; as regionData) {
+        @if (regionData.flatrate?.length || regionData.buy?.length || regionData.rent?.length) {
+          <section class="providers-section">
+            <h2>¿Dónde ver?</h2>
+            
+            @if (regionData.flatrate && regionData.flatrate.length > 0) {
+              <div class="provider-group">
+                <h3>Suscripción</h3>
+                <div class="provider-list">
+                  @for (provider of regionData.flatrate; track provider.provider_id) {
+                    <div class="provider-item" [title]="provider.provider_name">
+                      <img [src]="'https://image.tmdb.org/t/p/w92' + provider.logo_path" [alt]="provider.provider_name">
+                      <span>{{ provider.provider_name }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (regionData.buy && regionData.buy.length > 0) {
+              <div class="provider-group">
+                <h3>Compra</h3>
+                <div class="provider-list">
+                  @for (provider of regionData.buy; track provider.provider_id) {
+                    <div class="provider-item" [title]="provider.provider_name">
+                      <img [src]="'https://image.tmdb.org/t/p/w92' + provider.logo_path" [alt]="provider.provider_name">
+                      <span>{{ provider.provider_name }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (regionData.rent && regionData.rent.length > 0) {
+              <div class="provider-group">
+                <h3>Renta</h3>
+                <div class="provider-list">
+                  @for (provider of regionData.rent; track provider.provider_id) {
+                    <div class="provider-item" [title]="provider.provider_name">
+                      <img [src]="'https://image.tmdb.org/t/p/w92' + provider.logo_path" [alt]="provider.provider_name">
+                      <span>{{ provider.provider_name }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </section>
+        }
+      }
+
       <section class="trailer-section">
         <h2>Tráiler Oficial</h2>
         @defer (on viewport) {

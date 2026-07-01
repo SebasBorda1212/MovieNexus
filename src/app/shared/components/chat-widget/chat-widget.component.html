@@ -106,6 +106,21 @@
           autocomplete="off" 
           [disabled]="loading()"
         />
+        @if (isMicSupported()) {
+          <button 
+            type="button" 
+            class="mic-btn" 
+            [class.recording]="isRecording()" 
+            (click)="toggleRecording()" 
+            [disabled]="loading()" 
+            [title]="isRecording() ? 'Detener dictado' : 'Dictar mensaje'"
+            aria-label="Dictar mensaje"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="icon-mic">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+            </svg>
+          </button>
+        }
         <button type="submit" class="send-btn" [disabled]="!userInput().trim() || loading()" aria-label="Enviar mensaje">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon-send">
             <path d="M3.478 2.405a.75.75 0 00-.926.94l2.437 6.402a.496.496 0 00.323.313l13.568 3.442a.25.25 0 010 .48l-13.568 3.442a.497.497 0 00-.323.313L2.552 20.655a.75.75 0 00.926.94l17.755-9.117a.75.75 0 000-1.348L3.478 2.405z" />
